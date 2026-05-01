@@ -1,0 +1,22 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de MLflow (evita conflictos entre tu PC y la nube)
+mlruns/
+mlflow.db
+
+# Pruebas
+.pytest_cache/
+
+# Archivos de SO y Editores
+.vscode/
+.DS_Store
+Thumbs.db
