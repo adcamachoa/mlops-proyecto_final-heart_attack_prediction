@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import yaml
 import os
 
 def preprocess_data(input_path, output_dir):
@@ -27,6 +28,11 @@ def preprocess_data(input_path, output_dir):
     print(f"✅ Datos preprocesados y guardados en: {output_path}")
 
 if __name__ == "__main__":
-    INPUT_FILE = "data/raw/heart_attack_prediction.csv"
-    OUTPUT_FOLDER = "data/processed/"
-    preprocess_data(INPUT_FILE, OUTPUT_FOLDER)
+    # Cargar las rutas desde config.yaml
+    with open("config.yaml", "r") as file:
+        config = yaml.safe_load(file)
+    
+    INPUT_FILE = config["data"]["raw_path"]
+    OUTPUT_FILE = config["data"]["processed_path"]
+    
+    preprocess_data(INPUT_FILE, OUTPUT_FILE)
