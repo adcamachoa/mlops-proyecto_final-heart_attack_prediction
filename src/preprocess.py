@@ -3,27 +3,27 @@ import numpy as np
 import yaml
 import os
 
-def preprocess_data(input_path, output_dir):
+def preprocess_data(input_path, output_path):
     print(f"Cargando datos raw desde: {input_path}")
     df = pd.read_csv(input_path)
     
-    # 1. Limpiar posibles espacios en blanco en las columnas
-    df.columns = df.columns.str.strip()
-    
-    # 2. Reemplazar '?' por nulos reales
+    print("Limpiando valores nulos y estandarizando tipos de datos...")
+    # Reemplazar '?' ocultos por valores nulos reales (NaN)
     df.replace('?', np.nan, inplace=True)
     
-    # 3. Forzar el tipo de dato numérico
-    cols_to_numeric = ['trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'slope', 'ca', 'thal']
-    for col in cols_to_numeric:
+    # Forzar todas las columnas a formato numérico
+    for col in df.columns:
         df[col] = pd.to_numeric(df[col], errors='coerce')
         
-    # 4. Imputar nulos con la mediana
+    # Imputar valores faltantes usando la mediana
     df = df.fillna(df.median())
     
-    # 5. Guardar el dataset limpio
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, 'heart_attack_cleaned.csv')
+    # Extraemos solo la ruta de la carpeta (ej. "data/processed")
+    directorio = os.path.dirname(output_path)
+    if directorio: # Solo crea la carpeta si la ruta no está vacía
+        os.makedirs(directorio, exist_ok=True)
+    
+    # Guardar el archivo limpio
     df.to_csv(output_path, index=False)
     print(f"✅ Datos preprocesados y guardados en: {output_path}")
 
