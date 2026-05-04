@@ -19,6 +19,7 @@ def main():
     # 2. Separar variables (X) y la variable objetivo (y)
     # Solución al Data Leakage: Binarizar usando el umbral del config
     X = df.drop(columns=["target"])
+    X = X.astype(float)
     y = (df["target"] > config["model"]["threshold"]).astype(int)
     
     # 3. División de datos (Train/Test)
@@ -27,6 +28,7 @@ def main():
     )
     
     # 4. Configurar experimento en MLflow
+    mlflow.set_tracking_uri("sqlite:///mlflow.db")
     mlflow.set_experiment("Heart_Attack_Prediction")
     
     with mlflow.start_run():
